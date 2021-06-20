@@ -1,0 +1,101 @@
+// SPDX-License-Identifier: GPL-3.0
+
+
+
+
+pragma solidity >=0.7.0 <0.9.0;
+
+contract Customer {
+    uint256 public Count = 0;
+   // mapping(uint => SDealer) public scrapDealer;
+    mapping(uint256=> Passbookdetails) public accountNumber;
+    mapping(uint256=>temp) public tempAccountNumber;
+    mapping(address=>uint256) public addressInfo;
+    address public owner;
+    uint256[] public accountList;
+    uint256[] public tempDealers;
+    uint256[] public approvedUsers;
+    address private userContract;
+
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
+    }
+
+    struct SDealer {
+        uint _id;
+        string _scrapcenterName;
+        string _dealerName;
+        string _location;
+        string _contact;
+        uint256 _licenseno;
+        string _permits;
+        address dealerAddress;
+        address[] needApproval;
+    }
+    
+     struct Passbookdetails{
+        string Accountholdername;
+        string Fathername;
+        string Aadharnum;
+        string _location;
+        string _contact;
+        uint256 accno;
+        address residentialAddress;
+       
+    }
+    struct temp {
+      string Accountholdername;
+        string Fathername;
+        string Aadharnum;
+        string _location;
+        string _contact;
+        uint256 accno;
+        address residentialAddress;
+        
+    }
+
+   
+   
+    function addUser(
+        string memory Accountholdername,
+        string memory Fathername,
+        string memory Aadharnum,
+        string memory _location,
+        string memory _contact,
+        uint256 accno
+        
+        
+        
+        
+    )
+        public
+        
+    {
+        incrementCount();
+        tempAccountNumber[accno] = temp(Accountholdername,Fathername,Aadharnum,_location,_contact,accno,msg.sender);
+        
+       
+    }
+
+    function incrementCount() internal {
+        Count += 1;
+    }
+     
+  
+    
+    function ApproveSD(uint256 addrr) external onlyOwner {
+        accountNumber[addrr].Accountholdername=tempAccountNumber[addrr].Accountholdername;
+        accountNumber[addrr].Fathername=tempAccountNumber[addrr].Fathername;
+        accountNumber[addrr].Aadharnum=tempAccountNumber[addrr].Aadharnum;
+        accountNumber[addrr]._location=tempAccountNumber[addrr]._location;
+        accountNumber[addrr]._contact=tempAccountNumber[addrr]._contact;
+        accountNumber[addrr].accno=tempAccountNumber[addrr].accno;
+        accountNumber[addrr].residentialAddress=tempAccountNumber[addrr].residentialAddress;
+        
+        
+    }
+
+  
+    
+}
